@@ -110,6 +110,11 @@ public class LuaGenerateManager extends GenerateManager {
 		gr = generateLuaSource(contextMap);
 		result.add(gr);
 
+		gr = generateRocksFile(contextMap);
+		result.add(gr);
+
+
+
 		/*
 		if ( 0<allIdlFileParams.size() ) {
 			gr = generateIDLCompileBat(contextMap);
@@ -130,9 +135,13 @@ public class LuaGenerateManager extends GenerateManager {
 		gr = generateLuaTestSource(contextMap);
 		result.add(gr);
 		for (IdlFileParam idlFileParam : rtcParam.getConsumerIdlPathes()) {
+
 			contextMap.put("idlFileParam", idlFileParam);
-			gr = generateTestSVCIDLExampleSource(contextMap);
-			result.add(gr);
+			if(idlFileParam.getServiceClassParams().size() > 0)
+			{
+				gr = generateTestSVCIDLExampleSource(contextMap);
+				result.add(gr);
+			}
 		}
 
 		return result;
@@ -147,6 +156,23 @@ public class LuaGenerateManager extends GenerateManager {
 		GeneratedResult result = generate(infile, outfile, contextMap);
 		result.setNotBom(true);
 		//result.setEncode("UTF-8");
+
+
+		return result;
+	}
+
+
+	public GeneratedResult generateRocksFile(Map<String, Object> contextMap) {
+		RtcParam rtcParam = (RtcParam) contextMap.get("rtcParam");
+
+		String outfile = rtcParam.getName().toLowerCase() + "-" + rtcParam.getVersion() + "-1" + ".rockspec";
+		String infile = "lua/Lua_RTC.rockspec.vsl";
+
+
+
+		GeneratedResult result = generate(infile, outfile, contextMap);
+		result.setNotBom(true);
+
 		return result;
 	}
 

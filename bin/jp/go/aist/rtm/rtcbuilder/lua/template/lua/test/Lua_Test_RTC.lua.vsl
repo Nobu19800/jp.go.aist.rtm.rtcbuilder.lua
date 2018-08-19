@@ -1,33 +1,27 @@
 ---------------------------------
---! @file ${rtcParam.name}.lua
+--! @file ${rtcParam.name}Test.py
 --! @brief ${rtcParam.description}
 #set( $Date$ = "dummy" )
 --! @date \$Date$
+
 #if( ${rtcParam.docCreator.length()} > 0 )
---! @author ${tmpltHelperLua.convertAuthorDocLua(${rtcParam.docCreator})}
+--! @author ${tmpltHelperPy.convertAuthorDocPy(${rtcParam.docCreator})}
 #end
 #if( ${rtcParam.docLicense.length()} > 0 )
---! ${tmpltHelperLua.convertDocLua(${rtcParam.docLicense})}
+
+--! ${tmpltHelperPy.convertDocPy(${rtcParam.docLicense})}
 #end
 ---------------------------------
 
-
-
--- Import RTM module
 local openrtm  = require "openrtm"
 
 
 
 -- Import Service implementation class
 -- <rtc-template block="service_impl">
-#foreach($providerIdlFile in ${rtcParam.providerIdlPathes})
-local ${tmpltHelper.getFilenameNoExt(${providerIdlFile.idlFile})}_idl_example = require "${tmpltHelper.getFilenameNoExt(${providerIdlFile.idlFile})}_idl_example"
+#foreach($consumerIdlFile in ${rtcParam.consumerIdlPathes})
+local ${tmpltHelper.getFilenameNoExt(${consumerIdlFile.idlFile})}_idl_example = require "${tmpltHelper.getFilenameNoExt(${consumerIdlFile.idlFile})}_idl_example"
 #end
-
-
-
-
-
 
 
 -- </rtc-template>
@@ -35,10 +29,8 @@ local ${tmpltHelper.getFilenameNoExt(${providerIdlFile.idlFile})}_idl_example = 
 
 -- This module's spesification
 -- <rtc-template block="module_spec">
--- This module's spesification
--- <rtc-template block="module_spec">
-local ${luaConv.convToLower(${rtcParam.name})}_spec = {["implementation_id"]="${rtcParam.name}",
-		 ["type_name"]="${rtcParam.name}",
+local ${luaConv.convToLower(${rtcParam.name})}test_spec = {["implementation_id"]="${rtcParam.name}Test", 
+		 ["type_name"[="${rtcParam.name}Test", 
 		 ["description"]="${rtcParam.description}",
 		 ["version"]="${rtcParam.version}",
 		 ["vendor"]="${rtcParam.vender}",
@@ -75,8 +67,7 @@ local ${luaConv.convToLower(${rtcParam.name})}_spec = {["implementation_id"]="${
 		 ""}
 -- </rtc-template>
 
-
--- @class ${rtcParam.name}
+-- @class ${rtcParam.name}Test
 -- @brief ${rtcParam.description}
 #if( ${rtcParam.docDescription.length()} > 0 )
 --
@@ -94,18 +85,17 @@ local ${luaConv.convToLower(${rtcParam.name})}_spec = {["implementation_id"]="${
 --
 -- ${tmpltHelperLua.convertModuleDocLua(${rtcParam.docReference})}
 #end
-local ${rtcParam.name} = {}
-${rtcParam.name}.new = function(manager)
+local ${rtcParam.name}Test = {}
+${rtcParam.name}Test.new = function(manager)
 	local obj = {}
 	setmetatable(obj, {__index=openrtm.RTObject.new(manager)})
 
 #foreach($IdlFile in ${allIdlFileParam})
 #if(${IdlFile.dataPort})
-	local fpath = openrtm.StringUtil.dirname(string.sub(debug.getinfo(1)["source"],2))
-	local _str = string.gsub(fpath,"\\","/").."idl/${tmpltHelper.getFileName(${IdlFile.IdlFile})}"
-	manager:loadIdLFile(_str)
+	manager:loadIdLFile("idl/${tmpltHelper.getFileName(${IdlFile.IdlFile})}")
 #end
 #end
+
 
 #foreach($port in ${rtcParam.outports})
 	obj._d_${port.tmplVarName} = openrtm.RTCUtil.instantiateDataType("${luaConv.getDataportInitMethodName(${port.type})}")
@@ -125,7 +115,7 @@ ${rtcParam.name}.new = function(manager)
 #if(${port.docOperation.length()}>0)		 - Operation Cycle: ${tmpltHelperLua.convertCycleDocLua(${port.docOperation})}
 #end
 	--]]
-	obj._${port.name}Out = openrtm.OutPort.new("${port.name}", obj._d_${port.tmplVarName}, "${luaConv.getDataportInitMethodName(${port.type})}")
+	obj._${port.name}In = openrtm.InPort.new("${port.name}", obj._d_${port.tmplVarName}, "${luaConv.getDataportInitMethodName(${port.type})}")
 #end
 #foreach($port in ${rtcParam.inports})
 	obj._d_${port.tmplVarName} = openrtm.RTCUtil.instantiateDataType("${luaConv.getDataportInitMethodName(${port.type})}")
@@ -145,7 +135,7 @@ ${rtcParam.name}.new = function(manager)
 #if(${port.docOperation.length()}>0)		 - Operation Cycle: ${tmpltHelperLua.convertCycleDocLua(${port.docOperation})}
 #end
 	--]]
-	obj._${port.name}In = openrtm.InPort.new("${port.name}", obj._d_${port.tmplVarName}, "${luaConv.getDataportInitMethodName(${port.type})}")
+	obj._${port.name}Out = openrtm.OutPort.new("${port.name}", obj._d_${port.tmplVarName}, "${luaConv.getDataportInitMethodName(${port.type})}")
 #end
 
 #if(${rtcParam.servicePorts.size()}>0)
@@ -164,7 +154,7 @@ ${rtcParam.name}.new = function(manager)
 #foreach($servicePort in ${rtcParam.servicePorts})
 #if(${servicePort.servicePortInterfaces.size()}>0)
 #foreach($serviceInterface in ${servicePort.servicePortInterfaces})
-#if(${serviceInterface.index}==0)
+#if(${serviceInterface.index}==1)
 	--[[
 #if(${serviceInterface.docDescription.length()}>0)		${tmpltHelperLua.convertDescDocLua(${serviceInterface.docDescription})}
 #end
@@ -187,7 +177,7 @@ ${rtcParam.name}.new = function(manager)
 #foreach($servicePort in ${rtcParam.servicePorts})
 #if(${servicePort.servicePortInterfaces.size()}>0)
 #foreach($serviceInterface in ${servicePort.servicePortInterfaces})
-#if(${serviceInterface.index}==1)
+#if(${serviceInterface.index}==0)
 	--[[
 #if(${serviceInterface.docDescription.length()}>0)		${tmpltHelperLua.convertDescDocLua(${serviceInterface.docDescription})}
 #end
@@ -223,6 +213,7 @@ ${rtcParam.name}.new = function(manager)
 #end
 
 	-- </rtc-template>
+		 
 #if(${rtcParam.getDocActionOverView(0).length()}>0)	-- ${tmpltHelperLua.convertDescDocLua(${rtcParam.getDocActionOverView(0)})}
 #end
 	--
@@ -244,12 +235,12 @@ ${rtcParam.name}.new = function(manager)
 
 		-- Set OutPort buffers
 #foreach($port in ${rtcParam.outports})
-		self:addOutPort("${port.name}",self._${port.name}Out)
+		self:addInPort("${port.name}",self._${port.name}In)
 #end
 
 		-- Set InPort buffers
 #foreach($port in ${rtcParam.inports})
-		self:addInPort("${port.name}",self._${port.name}In)
+		self:addOutPort("${port.name}",self._${port.name}Out)
 #end
 
 		-- Set service provider to Ports
@@ -257,10 +248,8 @@ ${rtcParam.name}.new = function(manager)
 #foreach($servicePort in ${rtcParam.servicePorts})
 #if(${servicePort.servicePortInterfaces.size()}>0)
 #foreach($serviceInterface in ${servicePort.servicePortInterfaces})
-#if(${serviceInterface.index}==0)
-		local fpath = openrtm.StringUtil.dirname(string.sub(debug.getinfo(1)["source"],2))
-		local _str = string.gsub(fpath,"\\","/").."idl/${tmpltHelper.getFileName(${serviceInterface.IdlFile})}"
-		self._${servicePort.name}Port:registerProvider("${serviceInterface.name}", "${serviceInterface.interfaceType}", self._${serviceInterface.tmplVarName}, _str, "${tmpltHelperLua.convertServiceInterfaceName(${serviceInterface.interfaceType})}")
+#if(${serviceInterface.index}==1)
+		self._${servicePort.name}Port:registerProvider("${serviceInterface.name}", "${serviceInterface.interfaceType}", self._${serviceInterface.tmplVarName}, "idl/${tmpltHelper.getFileName(${serviceInterface.IdlFile})}", "${tmpltHelperLua.convertServiceInterfaceName(${serviceInterface.interfaceType})}")
 #end#end#end#end#end
 
 		-- Set service consumers to Ports
@@ -268,10 +257,8 @@ ${rtcParam.name}.new = function(manager)
 #foreach($servicePort in ${rtcParam.servicePorts})
 #if(${servicePort.servicePortInterfaces.size()}>0)
 #foreach($serviceInterface in ${servicePort.servicePortInterfaces})
-#if(${serviceInterface.index}==1)
-		local fpath = openrtm.StringUtil.dirname(string.sub(debug.getinfo(1)["source"],2))
-		local _str = string.gsub(fpath,"\\","/").."idl/${tmpltHelper.getFileName(${serviceInterface.IdlFile})}"
-		self._${servicePort.name}Port:registerConsumer("${serviceInterface.name}", "${serviceInterface.interfaceType}", self._${serviceInterface.tmplVarName}, _str)
+#if(${serviceInterface.index}==0)
+		self._${servicePort.name}Port:registerConsumer("${serviceInterface.name}", "${serviceInterface.interfaceType}", self._${serviceInterface.tmplVarName}, "idl/${tmpltHelper.getFileName(${serviceInterface.IdlFile})}")
 #end#end#end#end#end
 
 		-- Set CORBA Service Ports
@@ -542,19 +529,11 @@ ${rtcParam.name}.new = function(manager)
 end
 
 
-
-${rtcParam.name}.Init = function(manager)
-    local profile = openrtm.Properties.new{defaults_map=${luaConv.convToLower(${rtcParam.name})}_spec}
-    manager:registerFactory(profile,
-                            ${rtcParam.name}.new,
-                            openrtm.Factory.Delete)
-end
-
 local MyModuleInit = function(manager)
-    ${rtcParam.name}.Init(manager)
+    ${rtcParam.name}Test.Init(manager)
 
     -- Create a component
-    local comp = manager:createComponent("${rtcParam.name}")
+    local comp = manager:createComponent("${rtcParam.name}Test")
 end
 
 if openrtm.Manager.is_main() then
@@ -564,6 +543,6 @@ if openrtm.Manager.is_main() then
 	manager:activateManager()
 	manager:runManager()
 else
-	return ${rtcParam.name}
+	return ${rtcParam.name}Test
 end
 

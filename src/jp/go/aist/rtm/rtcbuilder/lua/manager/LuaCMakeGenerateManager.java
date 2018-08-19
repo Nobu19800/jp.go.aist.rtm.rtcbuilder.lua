@@ -1,5 +1,9 @@
 package jp.go.aist.rtm.rtcbuilder.lua.manager;
 
+import static jp.go.aist.rtm.rtcbuilder.IRtcBuilderConstants.*;
+import static jp.go.aist.rtm.rtcbuilder.lua.IRtcBuilderConstantsLua.*;
+import static jp.go.aist.rtm.rtcbuilder.util.RTCUtil.*;
+
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
@@ -8,10 +12,6 @@ import jp.go.aist.rtm.rtcbuilder.generator.GeneratedResult;
 import jp.go.aist.rtm.rtcbuilder.generator.param.RtcParam;
 import jp.go.aist.rtm.rtcbuilder.manager.CMakeGenerateManager;
 import jp.go.aist.rtm.rtcbuilder.template.TemplateUtil;
-import static jp.go.aist.rtm.rtcbuilder.IRtcBuilderConstants.*;
-import static jp.go.aist.rtm.rtcbuilder.util.RTCUtil.form;
-import static jp.go.aist.rtm.rtcbuilder.lua.IRtcBuilderConstantsLua.LANG_LUA;
-import static jp.go.aist.rtm.rtcbuilder.lua.IRtcBuilderConstantsLua.LANG_LUA_ARG;
 
 public class LuaCMakeGenerateManager extends CMakeGenerateManager {
 
@@ -58,7 +58,7 @@ public class LuaCMakeGenerateManager extends CMakeGenerateManager {
 			gr = generateCMakeWixPatchXmlIn(contextMap);
 			result.add(gr);
 		}
-		
+
 		return result;
 	}
 
@@ -68,7 +68,7 @@ public class LuaCMakeGenerateManager extends CMakeGenerateManager {
 	public GeneratedResult generateCMakeLists(Map<String, Object> contextMap) {
 		String outfile = "CMakeLists.txt";
 		String infile = "cmake/CMakeLists.txt.vsl";
-		GeneratedResult result = generateLua(infile, outfile, contextMap); 
+		GeneratedResult result = generateLua(infile, outfile, contextMap);
 		//result.setNotBom(true);
 		return result;
 	}
@@ -91,22 +91,23 @@ public class LuaCMakeGenerateManager extends CMakeGenerateManager {
 		String infile = "cmake/wix_patch.xml.in.vsl";
 		return generateLua(infile, outfile, contextMap);
 	}
-	
+
 	@Override
 	public GeneratedResult generateCmakeCPackOption(Map<String, Object> contextMap) {
 		String outfile = "cmake/cpack_options.cmake.in";
 		String infile = "cmake/cpack_options_cmake.in.vsl";
-		GeneratedResult result = generateLua(infile, outfile, contextMap); 
+		GeneratedResult result = generateLua(infile, outfile, contextMap);
 		//result.setNotBom(true);
 		return result;
 	}
-	
+
 	@Override
 	public GeneratedResult generateSrcCMakeLists(Map<String, Object> contextMap) {
 		String outfile = "src/CMakeLists.txt";
 		String infile = "cmake/SrcCMakeLists.txt.vsl";
-		GeneratedResult result = generateLua(infile, outfile, contextMap); 
+		GeneratedResult result = generateLua(infile, outfile, contextMap);
 		//result.setNotBom(true);
+
 		return result;
 	}
 	/////
