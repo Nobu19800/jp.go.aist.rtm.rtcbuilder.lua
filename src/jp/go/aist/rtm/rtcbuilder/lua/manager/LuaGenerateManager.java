@@ -136,12 +136,11 @@ public class LuaGenerateManager extends GenerateManager {
 		result.add(gr);
 		for (IdlFileParam idlFileParam : rtcParam.getConsumerIdlPathes()) {
 
+			if(idlFileParam.isDataPort()) continue;
+			if(RTCUtil.checkDefault(idlFileParam.getIdlPath(), rtcParam.getParent().getDataTypeParams())) continue;
 			contextMap.put("idlFileParam", idlFileParam);
-			if(idlFileParam.getServiceClassParams().size() > 0)
-			{
-				gr = generateTestSVCIDLExampleSource(contextMap);
-				result.add(gr);
-			}
+			gr = generateTestSVCIDLExampleSource(contextMap);
+			result.add(gr);
 		}
 
 		return result;
