@@ -62,7 +62,7 @@ local ${luaConv.convToLower(${rtcParam.name})}_spec = {["implementation_id"]="${
 #end
 #end
 #foreach($configParam in ${rtcParam.configParams})
-         ["conf.__type__.${configParam.name}"]="${configParam.type}",
+		 ["conf.__type__.${configParam.name}"]="${configParam.type}",
 #end
 #end
 #if( ${rtcParam.configParameterParams.size()} > 0 )
