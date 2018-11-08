@@ -19,6 +19,8 @@ import jp.go.aist.rtm.rtcbuilder.manager.GenerateManager;
 import jp.go.aist.rtm.rtcbuilder.template.TemplateHelper;
 import jp.go.aist.rtm.rtcbuilder.template.TemplateUtil;
 import jp.go.aist.rtm.rtcbuilder.ui.Perspective.LanguageProperty;
+import jp.go.aist.rtm.rtcbuilder.util.RTCUtil;
+
 
 /**
  * Luaファイルの出力を制御するマネージャ
@@ -67,12 +69,23 @@ public class LuaGenerateManager extends GenerateManager {
 		}
 
 		List<IdlFileParam> allIdlFileParams = new ArrayList<IdlFileParam>();
-		allIdlFileParams.addAll(rtcParam.getProviderIdlPathes());
-		allIdlFileParams.addAll(rtcParam.getConsumerIdlPathes());
+		for(IdlFileParam target : rtcParam.getProviderIdlPathes()) {
+			if(RTCUtil.checkDefault(target.getIdlPath(), rtcParam.getParent().getDataTypeParams())) continue;
+			allIdlFileParams.add(target);
+		}
+		for(IdlFileParam target : rtcParam.getConsumerIdlPathes()) {
+			if(RTCUtil.checkDefault(target.getIdlPath(), rtcParam.getParent().getDataTypeParams())) continue;
+			allIdlFileParams.add(target);
+		}
 		List<IdlFileParam> allIdlFileParamsForBuild = new ArrayList<IdlFileParam>();
-		allIdlFileParamsForBuild.addAll(allIdlFileParams);
-		allIdlFileParamsForBuild.addAll(rtcParam.getIncludedIdlPathes());
-
+		for(IdlFileParam target : allIdlFileParams) {
+			if(RTCUtil.checkDefault(target.getIdlPath(), rtcParam.getParent().getDataTypeParams())) continue;
+			allIdlFileParamsForBuild.add(target);
+		}
+		for(IdlFileParam target : rtcParam.getIncludedIdlPathes()) {
+			if(RTCUtil.checkDefault(target.getIdlPath(), rtcParam.getParent().getDataTypeParams())) continue;
+			allIdlFileParamsForBuild.add(target);
+		}
 		// IDLファイル内に記述されているServiceClassParamを設定する
 		for (IdlFileParam idlFileParam : allIdlFileParams) {
 			for (ServiceClassParam serviceClassParam : rtcParam.getServiceClassParams()) {
@@ -93,6 +106,9 @@ public class LuaGenerateManager extends GenerateManager {
 		contextMap.put("allIdlFileParam", allIdlFileParams);
 		contextMap.put("idlPathes", rtcParam.getIdlPathes());
 		contextMap.put("allIdlFileParamBuild", allIdlFileParamsForBuild);
+		contextMap.put("rtmRootIdlDir", RTCUtil.getRTMRootIdlPath());
+
+
 
 		return generateTemplateCode10(contextMap);
 	}
