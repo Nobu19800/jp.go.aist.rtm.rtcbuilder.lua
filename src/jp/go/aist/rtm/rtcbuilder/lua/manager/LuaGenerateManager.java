@@ -82,7 +82,10 @@ public class LuaGenerateManager extends GenerateManager {
 			if(RTCUtil.checkDefault(target.getIdlPath(), rtcParam.getParent().getDataTypeParams())) continue;
 			allIdlFileParamsForBuild.add(target);
 		}
-		allIdlFileParamsForBuild.addAll(rtcParam.getIncludedIdlPathes());
+		for(IdlFileParam target : rtcParam.getIncludedIdlPathes()) {
+			if(RTCUtil.checkDefault(target.getIdlPath(), rtcParam.getParent().getDataTypeParams())) continue;
+			allIdlFileParamsForBuild.add(target);
+		}
 		// IDLファイル内に記述されているServiceClassParamを設定する
 		for (IdlFileParam idlFileParam : allIdlFileParams) {
 			for (ServiceClassParam serviceClassParam : rtcParam.getServiceClassParams()) {
