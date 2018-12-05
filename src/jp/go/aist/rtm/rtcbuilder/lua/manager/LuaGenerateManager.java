@@ -19,6 +19,9 @@ import jp.go.aist.rtm.rtcbuilder.manager.GenerateManager;
 import jp.go.aist.rtm.rtcbuilder.template.TemplateHelper;
 import jp.go.aist.rtm.rtcbuilder.template.TemplateUtil;
 import jp.go.aist.rtm.rtcbuilder.ui.Perspective.LanguageProperty;
+import jp.go.aist.rtm.rtcbuilder.util.RTCUtil;
+
+
 
 /**
  * Luaファイルの出力を制御するマネージャ
@@ -67,12 +70,23 @@ public class LuaGenerateManager extends GenerateManager {
 		}
 
 		List<IdlFileParam> allIdlFileParams = new ArrayList<IdlFileParam>();
-		allIdlFileParams.addAll(rtcParam.getProviderIdlPathes());
-		allIdlFileParams.addAll(rtcParam.getConsumerIdlPathes());
+		for(IdlFileParam target : rtcParam.getProviderIdlPathes()) {
+			if(RTCUtil.checkDefault(target.getIdlPath(), rtcParam.getParent().getDataTypeParams())) continue;
+			allIdlFileParams.add(target);
+		}
+		for(IdlFileParam target : rtcParam.getConsumerIdlPathes()) {
+			if(RTCUtil.checkDefault(target.getIdlPath(), rtcParam.getParent().getDataTypeParams())) continue;
+			allIdlFileParams.add(target);
+		}
 		List<IdlFileParam> allIdlFileParamsForBuild = new ArrayList<IdlFileParam>();
-		allIdlFileParamsForBuild.addAll(allIdlFileParams);
-		allIdlFileParamsForBuild.addAll(rtcParam.getIncludedIdlPathes());
-
+		for(IdlFileParam target : allIdlFileParams) {
+			if(RTCUtil.checkDefault(target.getIdlPath(), rtcParam.getParent().getDataTypeParams())) continue;
+			allIdlFileParamsForBuild.add(target);
+		}
+		for(IdlFileParam target : rtcParam.getIncludedIdlPathes()) {
+			if(RTCUtil.checkDefault(target.getIdlPath(), rtcParam.getParent().getDataTypeParams())) continue;
+			allIdlFileParamsForBuild.add(target);
+		}
 		// IDLファイル内に記述されているServiceClassParamを設定する
 		for (IdlFileParam idlFileParam : allIdlFileParams) {
 			for (ServiceClassParam serviceClassParam : rtcParam.getServiceClassParams()) {
@@ -93,6 +107,9 @@ public class LuaGenerateManager extends GenerateManager {
 		contextMap.put("allIdlFileParam", allIdlFileParams);
 		contextMap.put("idlPathes", rtcParam.getIdlPathes());
 		contextMap.put("allIdlFileParamBuild", allIdlFileParamsForBuild);
+		contextMap.put("rtmRootIdlDir", RTCUtil.getRTMRootIdlPath());
+
+
 
 		return generateTemplateCode10(contextMap);
 	}
@@ -108,6 +125,10 @@ public class LuaGenerateManager extends GenerateManager {
 
 		GeneratedResult gr;
 		gr = generateLuaSource(contextMap);
+		result.add(gr);
+		gr = generateMoonSource(contextMap);
+		result.add(gr);
+		gr = generateLnsSource(contextMap);
 		result.add(gr);
 
 		gr = generateRocksFile(contextMap);
@@ -129,6 +150,10 @@ public class LuaGenerateManager extends GenerateManager {
 		for (IdlFileParam idlFileParam : rtcParam.getProviderIdlPathes()) {
 			contextMap.put("idlFileParam", idlFileParam);
 			gr = generateSVCIDLExampleSource(contextMap);
+			result.add(gr);
+			gr = generateMoonSVCIDLExampleSource(contextMap);
+			result.add(gr);
+			gr = generateLnsSVCIDLExampleSource(contextMap);
 			result.add(gr);
 		}
 		//////////
@@ -153,8 +178,39 @@ public class LuaGenerateManager extends GenerateManager {
 		String outfile = rtcParam.getName() + ".lua";
 		String infile = "lua/Lua_RTC.lua.vsl";
 		GeneratedResult result = generate(infile, outfile, contextMap);
-		result.setNotBom(true);
+
 		//result.setEncode("UTF-8");
+
+		result.setNotBom(true);
+
+
+		return result;
+	}
+
+	public GeneratedResult generateMoonSource(Map<String, Object> contextMap) {
+		RtcParam rtcParam = (RtcParam) contextMap.get("rtcParam");
+		String outfile = rtcParam.getName() + ".moon";
+		String infile = "lua/Moon_RTC.moon.vsl";
+		GeneratedResult result = generate(infile, outfile, contextMap);
+
+		//result.setEncode("UTF-8");
+
+
+		result.setNotBom(true);
+
+
+		return result;
+	}
+
+	public GeneratedResult generateLnsSource(Map<String, Object> contextMap) {
+		RtcParam rtcParam = (RtcParam) contextMap.get("rtcParam");
+		String outfile = rtcParam.getName() + ".lns";
+		String infile = "lua/Lns_RTC.lns.vsl";
+		GeneratedResult result = generate(infile, outfile, contextMap);
+
+		//result.setEncode("UTF-8");
+
+		result.setNotBom(true);
 
 
 		return result;
@@ -181,6 +237,29 @@ public class LuaGenerateManager extends GenerateManager {
 		String outfile = idlParam.getIdlFileNoExt() + "_idl_example.lua";
 		String infile = "lua/Lua_SVC_idl_example.lua.vsl";
 		GeneratedResult result = generate(infile, outfile, contextMap);
+
+		result.setNotBom(true);
+		return result;
+	}
+
+	public GeneratedResult generateMoonSVCIDLExampleSource(
+			Map<String, Object> contextMap) {
+		IdlFileParam idlParam = (IdlFileParam) contextMap.get("idlFileParam");
+		String outfile = idlParam.getIdlFileNoExt() + "_idl_example.moon";
+		String infile = "lua/Moon_SVC_idl_example.moon.vsl";
+		GeneratedResult result = generate(infile, outfile, contextMap);
+
+		result.setNotBom(true);
+		return result;
+	}
+
+	public GeneratedResult generateLnsSVCIDLExampleSource(
+			Map<String, Object> contextMap) {
+		IdlFileParam idlParam = (IdlFileParam) contextMap.get("idlFileParam");
+		String outfile = idlParam.getIdlFileNoExt() + "_idl_example.lns";
+		String infile = "lua/Lns_SVC_idl_example.lns.vsl";
+		GeneratedResult result = generate(infile, outfile, contextMap);
+
 		result.setNotBom(true);
 		return result;
 	}

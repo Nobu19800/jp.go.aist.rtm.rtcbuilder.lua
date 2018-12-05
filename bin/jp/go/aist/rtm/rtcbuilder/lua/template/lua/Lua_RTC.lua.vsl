@@ -62,7 +62,7 @@ local ${luaConv.convToLower(${rtcParam.name})}_spec = {["implementation_id"]="${
 #end
 #end
 #foreach($configParam in ${rtcParam.configParams})
-         ["conf.__type__.${configParam.name}"]="${configParam.type}",
+		 ["conf.__type__.${configParam.name}"]="${configParam.type}",
 #end
 #end
 #if( ${rtcParam.configParameterParams.size()} > 0 )
@@ -293,7 +293,7 @@ ${rtcParam.name}.new = function(manager)
 	#if(${rtcParam.IsNotImplemented(1)})--	#end${minusminus} formaer rtc_exiting_entry()
 	#if(${rtcParam.IsNotImplemented(1)})--	#end${minusminus}
 	#if(${rtcParam.IsNotImplemented(1)})--	#end${minusminus} @return RTC::ReturnCode_t
-	#if(${rtcParam.IsNotImplemented(1)})--#end
+	#if(${rtcParam.IsNotImplemented(1)})--	#end
 
 #if(${rtcParam.getDocActionPreCondition(1).length()}>0)	#if(${rtcParam.IsNotImplemented(1)})--#end	-- @pre ${tmpltHelperLua.convertPreShDocLua(${rtcParam.getDocActionPreCondition(1)})}
 #end
@@ -368,14 +368,14 @@ ${rtcParam.name}.new = function(manager)
 #end
 #if(${rtcParam.getDocActionPostCondition(4).length()}>0)	#if(${rtcParam.IsNotImplemented(4)})--#end	-- @post ${tmpltHelperLua.convertPostShDocLua(${rtcParam.getDocActionPostCondition(4)})}
 #end
-	#if(${rtcParam.IsNotImplemented(4)})--#end${minusminus}
-	#if(${rtcParam.IsNotImplemented(4)})--#end${function} obj:onActivated(ec_id)
-	#if(${rtcParam.IsNotImplemented(4)})--#end
+	#if(${rtcParam.IsNotImplemented(4)})--	#end${minusminus}
+	#if(${rtcParam.IsNotImplemented(4)})--	#end${function} obj:onActivated(ec_id)
+	#if(${rtcParam.IsNotImplemented(4)})--	#end
 #if(${tmpltHelper.checkDetailContent(4,${rtcParam})})		${rtcParam.getDetailContent(4)}
 #end
 
-	#if(${rtcParam.IsNotImplemented(4)})--#end	return self._ReturnCode_t.RTC_OK
-	#if(${rtcParam.IsNotImplemented(4)})--#end${end}
+	#if(${rtcParam.IsNotImplemented(4)})--	#end	return self._ReturnCode_t.RTC_OK
+	#if(${rtcParam.IsNotImplemented(4)})--	#end${end}
 
 #if(${rtcParam.getDocActionOverView(5).length()}>0)	#if(${rtcParam.IsNotImplemented(5)})--#end${minusminus} ${tmpltHelperLua.convertActivityDocLua(${rtcParam.getDocActionOverView(5)})}
 #end
@@ -420,8 +420,8 @@ ${rtcParam.name}.new = function(manager)
 #if(${tmpltHelper.checkDetailContent(9,${rtcParam})})		${rtcParam.getDetailContent(9)}
 #end
 
-	#if(${rtcParam.IsNotImplemented(9)})--#end	return self._ReturnCode_t.RTC_OK
-	#if(${rtcParam.IsNotImplemented(9)})--#end${end}
+	#if(${rtcParam.IsNotImplemented(9)})--	#end	return self._ReturnCode_t.RTC_OK
+	#if(${rtcParam.IsNotImplemented(9)})--	#end${end}
 
 #if(${rtcParam.getDocActionOverView(6).length()}>0)	#if(${rtcParam.IsNotImplemented(6)})--#end${minusminus} ${tmpltHelperLua.convertActivityDocLua(${rtcParam.getDocActionOverView(6)})}
 #end
@@ -443,8 +443,8 @@ ${rtcParam.name}.new = function(manager)
 #if(${tmpltHelper.checkDetailContent(6,${rtcParam})})		${rtcParam.getDetailContent(6)}
 #end
 
-	#if(${rtcParam.IsNotImplemented(6)})--#end	return self._ReturnCode_t.RTC_OK
-	#if(${rtcParam.IsNotImplemented(6)})--#end${end}
+	#if(${rtcParam.IsNotImplemented(6)})--	#end	return self._ReturnCode_t.RTC_OK
+	#if(${rtcParam.IsNotImplemented(6)})--	#end${end}
 
 #if(${rtcParam.getDocActionOverView(7).length()}>0)	#if(${rtcParam.IsNotImplemented(7)})--#end${minusminus} ${tmpltHelperLua.convertActivityDocLua(${rtcParam.getDocActionOverView(7)})}
 #end

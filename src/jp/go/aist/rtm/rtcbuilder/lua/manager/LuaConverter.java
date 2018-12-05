@@ -22,24 +22,41 @@ public class LuaConverter {
 	private final String dirOut = "out";
 	private final String dirInOut = "inout";
 
+	private final String idlShort = "short";
+	private final String idlLong = "long";
 	private final String idlLongLong = "longlong";
+	private final String idlUnsignedShort = "unsignedshort";
 	private final String idlUnsignedLong = "unsignedlong";
 	private final String idlUnsignedLongLong = "unsignedlonglong";
-	private final String idlUnsignedShort = "unsignedshort";
+	private final String idlFloat = "float";
+	private final String idlDouble = "double";
+	private final String idlLongDouble = "longdouble";
+	private final String idlBoolean = "boolean";
+	private final String idlChar = "char";
+	private final String idlWchar = "wchar";
+	private final String idlOctet = "octet";
 	private final String idlString = "string";
 	private final String idlWstring = "wstring";
 	private final String idlVoid= "void";
+
+
 	//
-	private final String luaLongLong = "longlong";
-	private final String luaUnsignedLong = "ulong";
-	private final String luaUnsignedLongLong = "ulonglong";
-	private final String luaUnsignedShort = "ushort";
-	private final String luaString = "string";
-	//
-	private final String luaLongLongParam = "long long";
-	private final String luaUnsignedLongParam = "unsigned long";
-	private final String luaUnsignedLongLongParam = "unsigned long long";
-	private final String luaUnsignedShortParam = "unsigned short";
+	private final String luaShort = "int";
+	private final String luaLong = "int";
+	private final String luaLongLong = "int";
+	private final String luaUnsignedShort = "int";
+	private final String luaUnsignedLong = "int";
+	private final String luaUnsignedLongLong = "int";
+	private final String luaFloat = "real";
+	private final String luaDouble = "real";
+	private final String luaLongDouble = "real";
+	private final String luaBoolean = "bool";
+	private final String luaChar = "str";
+	private final String luaWchar = "str";
+	private final String luaOctet = "str";
+	private final String luaString = "str";
+	private final String luaWstring = "str";
+	private final String luaVoid= "nil";
 	//
 
 	public LuaConverter() {
@@ -50,10 +67,24 @@ public class LuaConverter {
 		mapType.put(idlUnsignedShort, luaUnsignedShort);
 		//
 		mapTypeArgs = new HashMap<String, String>(mapType);
-		mapTypeArgs.put(idlLongLong, luaLongLongParam);
-		mapTypeArgs.put(idlUnsignedLong, luaUnsignedLongParam);
-		mapTypeArgs.put(idlUnsignedLongLong, luaUnsignedLongLongParam);
-		mapTypeArgs.put(idlUnsignedShort, luaUnsignedShortParam);
+		mapTypeArgs.put(idlShort, luaShort);
+		mapTypeArgs.put(idlLong, luaLong);
+		mapTypeArgs.put(idlLongLong, luaLongLong);
+		mapTypeArgs.put(idlUnsignedShort, luaUnsignedShort);
+		mapTypeArgs.put(idlUnsignedLong, luaUnsignedLong);
+		mapTypeArgs.put(idlUnsignedLongLong, luaUnsignedLongLong);
+		mapTypeArgs.put(idlFloat, luaFloat);
+		mapTypeArgs.put(idlDouble, luaDouble);
+		mapTypeArgs.put(idlLongDouble, luaLongDouble);
+		mapTypeArgs.put(idlBoolean, luaBoolean);
+		mapTypeArgs.put(idlChar, luaChar);
+		mapTypeArgs.put(idlWchar, luaWchar);
+		mapTypeArgs.put(idlOctet, luaOctet);
+		mapTypeArgs.put(idlString, luaString);
+		mapTypeArgs.put(idlWstring, luaWstring);
+		mapTypeArgs.put(idlVoid, luaVoid);
+
+
 		//
 //		mapTypeArgsCmnt = new HashMap(mapTypeArgs);
 		//

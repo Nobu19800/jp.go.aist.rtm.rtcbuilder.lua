@@ -37,7 +37,7 @@ ${idlFileParam.idlFileNoExt}_idl_example.${tmpltHelper.getBasename(${serviceClas
     --]]
 
 #foreach($serviceMethodParam in ${serviceClassParam.methods})
-    -- ${luaConv.convCORBA2LuaArg(${serviceMethodParam.type})} ${serviceMethodParam.name}(#foreach($serviceArgumentParam in ${serviceMethodParam.arguments})#if($velocityCount > 1), #end${serviceArgumentParam.direction} ${luaConv.convCORBA2LuathonArg(${serviceArgumentParam.type})} ${serviceArgumentParam.name}#end)
+    -- ${luaConv.convCORBA2LuaArg(${serviceMethodParam.type})} ${serviceMethodParam.name}(#foreach($serviceArgumentParam in ${serviceMethodParam.arguments})#if($velocityCount > 1), #end${serviceArgumentParam.direction} ${luaConv.convCORBA2LuaArg(${serviceArgumentParam.type})} ${serviceArgumentParam.name}#end)
     function obj:${serviceMethodParam.name}(${luaConv.selectInParamName(${serviceMethodParam},${serviceClassParam})})
         error(openrtm.Manager:getORB():newexcept{"CORBA::NO_IMPLEMENT",
               minor=0,
