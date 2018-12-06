@@ -1,8 +1,7 @@
 package = "${rtcParam.name}"
 version = "${rtcParam.version}-1"
 source = {
-   url = "",
-   dir = "",
+   url = ""
 }
 
 description = {
