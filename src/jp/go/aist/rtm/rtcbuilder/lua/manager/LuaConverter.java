@@ -90,6 +90,20 @@ public class LuaConverter {
 		//
 	}
 
+	public String convConfigSetType(String typeDef) {
+		if( typeDef.trim().equals("short") ) {
+			return "int";
+		} else if( typeDef.trim().equals("long") ) {
+			return "int";
+		} else if( typeDef.trim().equals("string") ) {
+			return "str";
+		} else if( typeDef.trim().equals("float") ) {
+			return "real";
+		} else if( typeDef.trim().equals("double") ) {
+			return "real";
+		}
+		return typeDef;
+	}
 	/**
 	 * CORBA型からLua型へ型を変換する(TypeDef考慮)
 	 *
