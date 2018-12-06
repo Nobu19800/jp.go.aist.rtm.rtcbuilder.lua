@@ -109,7 +109,7 @@ class ${rtcParam.name} extend openrtm_lns.RTObjectBase {
     let mut _${servicePort.name}Port:openrtm_lns.CorbaPort_lns;
 #end#end#end
 #foreach($configParam in ${rtcParam.configParams})
-    let mut _${configParam.tmplVarName}:openrtm_lns.config_int;
+    let mut _${configParam.tmplVarName}:openrtm_lns.config_${luaConv.convConfigSetType(${configParam.type})};
 #end
     pub fn __init( manager: openrtm_lns.Manager ) {
         super( manager );
@@ -118,6 +118,7 @@ class ${rtcParam.name} extend openrtm_lns.RTObjectBase {
         //fpath = openrtm_lns.StringUtil.dirname(string.sub(debug.getinfo(1)["source"],2))
         //_str = string.gsub(fpath,"\\","/").."idl/${tmpltHelper.getFileName(${IdlFile.IdlFile})}"
         //manager.loadIdLFile(_str);
+        manager.loadIdLFile("idl/${tmpltHelper.getFileName(${IdlFile.IdlFile})}");
 #end
 #end
 
@@ -252,7 +253,7 @@ class ${rtcParam.name} extend openrtm_lns.RTObjectBase {
     pub override fn onInitialize() mut : openrtm_lns.ReturnCode_t {
         // Bind variables and configuration variable
 #foreach($configParam in ${rtcParam.configParams})
-        self.bindParameter_int("${configParam.name}", self._${configParam.tmplVarName}, "${configParam.defaultVal}");
+        self.bindParameter_${luaConv.convConfigSetType(${configParam.type})}("${configParam.name}", self._${configParam.tmplVarName}, "${configParam.defaultVal}");
 #end
 
         // Set OutPort buffers
@@ -274,6 +275,7 @@ class ${rtcParam.name} extend openrtm_lns.RTObjectBase {
         //fpath = openrtm_lns.StringUtil.dirname(string.sub(debug.getinfo(1)["source"],2))
         //_str = string.gsub(fpath,"\\","/").."idl/${tmpltHelper.getFileName(${serviceInterface.IdlFile})}"
         //self._${servicePort.name}Port.registerProvider("${serviceInterface.name}", "${serviceInterface.interfaceType}", self._${serviceInterface.tmplVarName}, _str, "${tmpltHelperLua.convertServiceInterfaceName(${serviceInterface.interfaceType})}");
+        self._${servicePort.name}Port.registerProvider("${serviceInterface.name}", "${serviceInterface.interfaceType}", self._${serviceInterface.tmplVarName}, "idl/${tmpltHelper.getFileName(${serviceInterface.IdlFile})}", "${tmpltHelperLua.convertServiceInterfaceName(${serviceInterface.interfaceType})}");
 #end#end#end#end#end
 
         // Set service consumers to Ports
@@ -285,6 +287,7 @@ class ${rtcParam.name} extend openrtm_lns.RTObjectBase {
         //fpath = openrtm_lns.StringUtil.dirname(string.sub(debug.getinfo(1)["source"],2))
         //_str = string.gsub(fpath,"\\","/").."idl/${tmpltHelper.getFileName(${serviceInterface.IdlFile})}"
         //self._${servicePort.name}Port.registerConsumer("${serviceInterface.name}", "${serviceInterface.interfaceType}", self._${serviceInterface.tmplVarName}, _str);
+        self._${servicePort.name}Port.registerConsumer("${serviceInterface.name}", "${serviceInterface.interfaceType}", self._${serviceInterface.tmplVarName}, "idl/${tmpltHelper.getFileName(${serviceInterface.IdlFile})}");
 #end#end#end#end#end
 
         // Set CORBA Service Ports
@@ -301,12 +304,12 @@ class ${rtcParam.name} extend openrtm_lns.RTObjectBase {
 
 #if(${rtcParam.getDocActionOverView(1).length()}>0)	#if(${rtcParam.IsNotImplemented(1)})//#end // ${tmpltHelperLua.convertActivityDocLua(${rtcParam.getDocActionOverView(1)})}
 #end
-    #if(${rtcParam.IsNotImplemented(1)})//	#end //
-    #if(${rtcParam.IsNotImplemented(1)})//	#end // The finalize action (on ALIVE->END transition)
-    #if(${rtcParam.IsNotImplemented(1)})//	#end // formaer rtc_exiting_entry()
-    #if(${rtcParam.IsNotImplemented(1)})//	#end //
-    #if(${rtcParam.IsNotImplemented(1)})//	#end // @return RTC::ReturnCode_t
-    #if(${rtcParam.IsNotImplemented(1)})//	#end
+    #if(${rtcParam.IsNotImplemented(1)}) //	#end//
+    #if(${rtcParam.IsNotImplemented(1)}) //	#end// The finalize action (on ALIVE->END transition)
+    #if(${rtcParam.IsNotImplemented(1)}) //	#end// formaer rtc_exiting_entry()
+    #if(${rtcParam.IsNotImplemented(1)}) //	#end//
+    #if(${rtcParam.IsNotImplemented(1)}) //	#end// @return RTC::ReturnCode_t
+    #if(${rtcParam.IsNotImplemented(1)}) //	#end
 
 #if(${rtcParam.getDocActionPreCondition(1).length()}>0)	#if(${rtcParam.IsNotImplemented(1)})//#end        // @pre ${tmpltHelperLua.convertPreShDocLua(${rtcParam.getDocActionPreCondition(1)})}
 #end
@@ -323,37 +326,37 @@ class ${rtcParam.name} extend openrtm_lns.RTObjectBase {
 
 #if(${rtcParam.getDocActionOverView(2).length()}>0)	#if(${rtcParam.IsNotImplemented(2)})//#end // ${tmpltHelperLua.convertActivityDocLua(${rtcParam.getDocActionOverView(2)})}
 #end
-    #if(${rtcParam.IsNotImplemented(2)})//	#end //
-    #if(${rtcParam.IsNotImplemented(2)})//	#end // The startup action when ExecutionContext startup
-    #if(${rtcParam.IsNotImplemented(2)})//	#end // former rtc_starting_entry()
-    #if(${rtcParam.IsNotImplemented(2)})//	#end //
-    #if(${rtcParam.IsNotImplemented(2)})//	#end // @param ec_id target ExecutionContext Id
-    #if(${rtcParam.IsNotImplemented(2)})//	#end //
-    #if(${rtcParam.IsNotImplemented(2)})//	#end // @return RTC::ReturnCode_t
-    #if(${rtcParam.IsNotImplemented(2)})//	#end //
+    #if(${rtcParam.IsNotImplemented(2)})//	#end//
+    #if(${rtcParam.IsNotImplemented(2)})//	#end// The startup action when ExecutionContext startup
+    #if(${rtcParam.IsNotImplemented(2)})//	#end// former rtc_starting_entry()
+    #if(${rtcParam.IsNotImplemented(2)})//	#end//
+    #if(${rtcParam.IsNotImplemented(2)})//	#end// @param ec_id target ExecutionContext Id
+    #if(${rtcParam.IsNotImplemented(2)})//	#end//
+    #if(${rtcParam.IsNotImplemented(2)})//	#end// @return RTC::ReturnCode_t
+    #if(${rtcParam.IsNotImplemented(2)})//	#end//
 #if(${rtcParam.getDocActionPreCondition(2).length()}>0)	#if(${rtcParam.IsNotImplemented(2)})//#end	// @pre ${tmpltHelperLua.convertPreShDocLua(${rtcParam.getDocActionPreCondition(2)})}
 #end
 #if(${rtcParam.getDocActionPostCondition(2).length()}>0)	#if(${rtcParam.IsNotImplemented(2)})//#end	// @post ${tmpltHelperLua.convertPostShDocLua(${rtcParam.getDocActionPostCondition(2)})}
 #end
-    #if(${rtcParam.IsNotImplemented(2)})//	#end //
+    #if(${rtcParam.IsNotImplemented(2)})//	#end//
    #if(${rtcParam.IsNotImplemented(2)}) //	#end pub override fn onStartup(ec_id:int) mut : openrtm_lns.ReturnCode_t {
     #if(${rtcParam.IsNotImplemented(2)})//	#end
 #if(${tmpltHelper.checkDetailContent(2,${rtcParam})})		${rtcParam.getDetailContent(2)}
 #end
 
-    #if(${rtcParam.IsNotImplemented(2)})//	#end	return openrtm_lns.ReturnCode_t.RTC_OK;
+    #if(${rtcParam.IsNotImplemented(2)})//	#end    return openrtm_lns.ReturnCode_t.RTC_OK;
    #if(${rtcParam.IsNotImplemented(2)}) //	#end }
 
 #if(${rtcParam.getDocActionOverView(3).length()}>0)	#if(${rtcParam.IsNotImplemented(3)})//#end // ${tmpltHelperLua.convertActivityDocLua(${rtcParam.getDocActionOverView(3)})}
 #end
-    #if(${rtcParam.IsNotImplemented(3)})//	#end //
-    #if(${rtcParam.IsNotImplemented(3)})//	#end // The shutdown action when ExecutionContext stop
-    #if(${rtcParam.IsNotImplemented(3)})//	#end // former rtc_stopping_entry()
-    #if(${rtcParam.IsNotImplemented(3)})//	#end //
-    #if(${rtcParam.IsNotImplemented(3)})//	#end // @param ec_id target ExecutionContext Id
-    #if(${rtcParam.IsNotImplemented(3)})//	#end //
-    #if(${rtcParam.IsNotImplemented(3)})//	#end // @return RTC::ReturnCode_t
-    #if(${rtcParam.IsNotImplemented(3)})//	#end //
+    #if(${rtcParam.IsNotImplemented(3)})//	#end//
+    #if(${rtcParam.IsNotImplemented(3)})//	#end// The shutdown action when ExecutionContext stop
+    #if(${rtcParam.IsNotImplemented(3)})//	#end// former rtc_stopping_entry()
+    #if(${rtcParam.IsNotImplemented(3)})//	#end//
+    #if(${rtcParam.IsNotImplemented(3)})//	#end// @param ec_id target ExecutionContext Id
+    #if(${rtcParam.IsNotImplemented(3)})//	#end//
+    #if(${rtcParam.IsNotImplemented(3)})//	#end// @return RTC::ReturnCode_t
+    #if(${rtcParam.IsNotImplemented(3)})//	#end//
 #if(${rtcParam.getDocActionPreCondition(3).length()}>0)	#if(${rtcParam.IsNotImplemented(3)})//#end	// @pre ${tmpltHelperLua.convertPreShDocLua(${rtcParam.getDocActionPreCondition(3)})}
 #end
 #if(${rtcParam.getDocActionPostCondition(3).length()}>0)	#if(${rtcParam.IsNotImplemented(3)})//#end	// @post ${tmpltHelperLua.convertPostShDocLua(${rtcParam.getDocActionPostCondition(3)})}
@@ -364,30 +367,30 @@ class ${rtcParam.name} extend openrtm_lns.RTObjectBase {
 #if(${tmpltHelper.checkDetailContent(3,${rtcParam})})		${rtcParam.getDetailContent(3)}
 #end
 
-    #if(${rtcParam.IsNotImplemented(3)})//	#end	return openrtm_lns.ReturnCode_t.RTC_OK;
+    #if(${rtcParam.IsNotImplemented(3)})//	#end    return openrtm_lns.ReturnCode_t.RTC_OK;
    #if(${rtcParam.IsNotImplemented(3)}) //	#end }
 
 #if(${rtcParam.getDocActionOverView(4).length()}>0)	#if(${rtcParam.IsNotImplemented(4)})//#end // ${tmpltHelperLua.convertActivityDocLua(${rtcParam.getDocActionOverView(4)})}
 #end
-    #if(${rtcParam.IsNotImplemented(4)})//	#end //
-    #if(${rtcParam.IsNotImplemented(4)})//	#end // The activated action (Active state entry action)
-    #if(${rtcParam.IsNotImplemented(4)})//	#end // former rtc_active_entry()
-    #if(${rtcParam.IsNotImplemented(4)})//	#end //
-    #if(${rtcParam.IsNotImplemented(4)})//	#end // @param ec_id target ExecutionContext Id
-    #if(${rtcParam.IsNotImplemented(4)})//	#end //
-    #if(${rtcParam.IsNotImplemented(4)})//	#end // @return RTC::ReturnCode_t
-    #if(${rtcParam.IsNotImplemented(4)})//	#end //
+    #if(${rtcParam.IsNotImplemented(4)})//	#end//
+    #if(${rtcParam.IsNotImplemented(4)})//	#end// The activated action (Active state entry action)
+    #if(${rtcParam.IsNotImplemented(4)})//	#end// former rtc_active_entry()
+    #if(${rtcParam.IsNotImplemented(4)})//	#end//
+    #if(${rtcParam.IsNotImplemented(4)})//	#end// @param ec_id target ExecutionContext Id
+    #if(${rtcParam.IsNotImplemented(4)})//	#end//
+    #if(${rtcParam.IsNotImplemented(4)})//	#end// @return RTC::ReturnCode_t
+    #if(${rtcParam.IsNotImplemented(4)})//	#end//
 #if(${rtcParam.getDocActionPreCondition(4).length()}>0)	#if(${rtcParam.IsNotImplemented(4)})//#end	// @pre ${tmpltHelperLua.convertPreShDocLua(${rtcParam.getDocActionPreCondition(4)})}
 #end
 #if(${rtcParam.getDocActionPostCondition(4).length()}>0)	#if(${rtcParam.IsNotImplemented(4)})//#end	// @post ${tmpltHelperLua.convertPostShDocLua(${rtcParam.getDocActionPostCondition(4)})}
 #end
-    #if(${rtcParam.IsNotImplemented(4)})//	#end //
+    #if(${rtcParam.IsNotImplemented(4)})//	#end//
    #if(${rtcParam.IsNotImplemented(4)}) //	#end pub override fn onActivated(ec_id:int) mut : openrtm_lns.ReturnCode_t {
     #if(${rtcParam.IsNotImplemented(4)})//	#end
 #if(${tmpltHelper.checkDetailContent(4,${rtcParam})})		${rtcParam.getDetailContent(4)}
 #end
 
-    #if(${rtcParam.IsNotImplemented(4)})//	#end	return openrtm_lns.ReturnCode_t.RTC_OK;
+    #if(${rtcParam.IsNotImplemented(4)})//	#end    return openrtm_lns.ReturnCode_t.RTC_OK;
    #if(${rtcParam.IsNotImplemented(4)}) //	#end }
 
 #if(${rtcParam.getDocActionOverView(5).length()}>0)	#if(${rtcParam.IsNotImplemented(5)})//#end // ${tmpltHelperLua.convertActivityDocLua(${rtcParam.getDocActionOverView(5)})}
@@ -410,7 +413,7 @@ class ${rtcParam.name} extend openrtm_lns.RTObjectBase {
 #if(${tmpltHelper.checkDetailContent(5,${rtcParam})})		${rtcParam.getDetailContent(5)}
 #end
 
-    #if(${rtcParam.IsNotImplemented(5)})//	#end	return openrtm_lns.ReturnCode_t.RTC_OK;
+    #if(${rtcParam.IsNotImplemented(5)})//	#end    return openrtm_lns.ReturnCode_t.RTC_OK;
    #if(${rtcParam.IsNotImplemented(5)}) //	#end }
 
 #if(${rtcParam.getDocActionOverView(9).length()}>0)	#if(${rtcParam.IsNotImplemented(9)})//#end // ${tmpltHelperLua.convertActivityDocLua(${rtcParam.getDocActionOverView(9)})}
@@ -433,7 +436,7 @@ class ${rtcParam.name} extend openrtm_lns.RTObjectBase {
 #if(${tmpltHelper.checkDetailContent(9,${rtcParam})})		${rtcParam.getDetailContent(9)}
 #end
 
-    #if(${rtcParam.IsNotImplemented(9)})//	#end	return openrtm_lns.ReturnCode_t.RTC_OK;
+    #if(${rtcParam.IsNotImplemented(9)})//	#end    return openrtm_lns.ReturnCode_t.RTC_OK;
    #if(${rtcParam.IsNotImplemented(9)}) //	#end }
 
 #if(${rtcParam.getDocActionOverView(6).length()}>0)	#if(${rtcParam.IsNotImplemented(6)})//#end // ${tmpltHelperLua.convertActivityDocLua(${rtcParam.getDocActionOverView(6)})}
@@ -456,7 +459,7 @@ class ${rtcParam.name} extend openrtm_lns.RTObjectBase {
 #if(${tmpltHelper.checkDetailContent(6,${rtcParam})})		${rtcParam.getDetailContent(6)}
 #end
 
-    #if(${rtcParam.IsNotImplemented(6)})//	#end	return openrtm_lns.ReturnCode_t.RTC_OK;
+    #if(${rtcParam.IsNotImplemented(6)})//	#end    return openrtm_lns.ReturnCode_t.RTC_OK;
    #if(${rtcParam.IsNotImplemented(6)}) //	#end }
 
 #if(${rtcParam.getDocActionOverView(7).length()}>0)	#if(${rtcParam.IsNotImplemented(7)})//#end // ${tmpltHelperLua.convertActivityDocLua(${rtcParam.getDocActionOverView(7)})}
@@ -479,7 +482,7 @@ class ${rtcParam.name} extend openrtm_lns.RTObjectBase {
 #if(${tmpltHelper.checkDetailContent(7,${rtcParam})})		${rtcParam.getDetailContent(7)}
 #end
 
-    #if(${rtcParam.IsNotImplemented(7)})//	#end	return openrtm_lns.ReturnCode_t.RTC_OK;
+    #if(${rtcParam.IsNotImplemented(7)})//	#end    return openrtm_lns.ReturnCode_t.RTC_OK;
    #if(${rtcParam.IsNotImplemented(7)}) //	#end }
 
 #if(${rtcParam.getDocActionOverView(8).length()}>0)	#if(${rtcParam.IsNotImplemented(8)})//#end // ${tmpltHelperLua.convertActivityDocLua(${rtcParam.getDocActionOverView(8)})}
@@ -502,7 +505,7 @@ class ${rtcParam.name} extend openrtm_lns.RTObjectBase {
 #if(${tmpltHelper.checkDetailContent(8,${rtcParam})})		${rtcParam.getDetailContent(8)}
 #end
 
-    #if(${rtcParam.IsNotImplemented(8)})//	#end	return openrtm_lns.ReturnCode_t.RTC_OK;
+    #if(${rtcParam.IsNotImplemented(8)})//	#end    return openrtm_lns.ReturnCode_t.RTC_OK;
    #if(${rtcParam.IsNotImplemented(8)}) //	#end }
 
 #if(${rtcParam.getDocActionOverView(10).length()}>0)	#if(${rtcParam.IsNotImplemented(10)})//#end // ${tmpltHelperLua.convertActivityDocLua(${rtcParam.getDocActionOverView(10)})}
@@ -526,7 +529,7 @@ class ${rtcParam.name} extend openrtm_lns.RTObjectBase {
 #if(${tmpltHelper.checkDetailContent(10,${rtcParam})})		${rtcParam.getDetailContent(10)}
 #end
 
-    #if(${rtcParam.IsNotImplemented(10)})//	#end	return openrtm_lns.ReturnCode_t.RTC_OK;
+    #if(${rtcParam.IsNotImplemented(10)})//	#end    return openrtm_lns.ReturnCode_t.RTC_OK;
    #if(${rtcParam.IsNotImplemented(10)}) //	#end }
 
 #if(${rtcParam.getDocActionOverView(11).length()}>0)	#if(${rtcParam.IsNotImplemented(11)})//#end // ${tmpltHelperLua.convertActivityDocLua(${rtcParam.getDocActionOverView(11)})}
@@ -549,7 +552,7 @@ class ${rtcParam.name} extend openrtm_lns.RTObjectBase {
 #if(${tmpltHelper.checkDetailContent(11,${rtcParam})})		${rtcParam.getDetailContent(11)}
 #end
 
-    #if(${rtcParam.IsNotImplemented(11)})//	#end	return openrtm_lns.ReturnCode_t.RTC_OK;
+    #if(${rtcParam.IsNotImplemented(11)})//	#end    return openrtm_lns.ReturnCode_t.RTC_OK;
    #if(${rtcParam.IsNotImplemented(11)}) //	#end }
 #end
 
