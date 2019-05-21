@@ -107,7 +107,6 @@ public class LuaGenerateManager extends GenerateManager {
 		contextMap.put("allIdlFileParam", allIdlFileParams);
 		contextMap.put("idlPathes", rtcParam.getIdlPathes());
 		contextMap.put("allIdlFileParamBuild", allIdlFileParamsForBuild);
-		contextMap.put("rtmRootIdlDir", RTCUtil.getRTMRootIdlPath());
 
 
 
